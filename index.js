@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const dns = require("dns");
 
 const options = {
-      
   // Setting family as 6 i.e. IPv6
   family: 6,
   hints: dns.ADDRCONFIG | dns.V4MAPPED,
@@ -33,20 +32,16 @@ app
     });
   })
   .post((req, res) => {
-    const checkUrl = dns.lookup(req.body.url, options, (err, addresses) =>
-      console.log("addresses: %j", addresses)
+    dns.lookup(req.body.url, options, (err, addresses) =>
+      addresses !== ""
+        ? res.json({
+            original_url: req.body.url,
+            short_url: 1,
+          })
+        : res.json({
+            error: "Invalid URL",
+          })
     );
-
-    if (checkUrl) {
-      res.json({
-        original_url: req.body.url,
-        short_url: 1,
-      });
-    } else {
-      res.json({
-        error: "Invalid URL",
-      });
-    }
   });
 
 app.listen(port, function () {
