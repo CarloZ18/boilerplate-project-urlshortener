@@ -4,6 +4,13 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const dns = require("dns");
+
+const options = {
+      
+  // Setting family as 6 i.e. IPv6
+  family: 6,
+  hints: dns.ADDRCONFIG | dns.V4MAPPED,
+};
 // Basic Configuration
 const port = process.env.PORT || 3000;
 
