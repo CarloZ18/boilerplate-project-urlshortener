@@ -6,7 +6,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
+console.log(process.env.MONGO_URI)
 //Model
 const urlSchema = new mongoose.Schema({
   original: String,
@@ -14,4 +14,4 @@ const urlSchema = new mongoose.Schema({
 
 let Url = mongoose.model("Url", urlSchema);
 
-module.exports = {Url};
+module.exports = Url
