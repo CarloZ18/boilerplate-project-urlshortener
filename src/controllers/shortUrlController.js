@@ -1,36 +1,41 @@
-const dns = require("dns");
 const shortUrlService = require("../services/shortUrlService");
+const validateUrl = require("../../utils/validateUrl");
 
-const getUrl = (req, res) => {
+const getAllUrls = (req, res) => {
   res.sendFile(process.cwd() + "/views/index.html");
+  shortUrlService.findAllUrls();
 };
 
-const addUrl = (req, res) => {
-  const newUrl = shortUrlService.addUrl();
- res.send({
-  original_url:newUrl
- })
+const getNewUrl =  (req, res) => {
+  const urlInBD=  shortUrlService.findUrlbyId(req.params.id)
+  res.redirect(urlInBD);
 };
 
-const shortUrl = (req, res) => {
-  const shortUrl = shortUrlService.shortUrl();
-  let url = `${req.body.url}`.slice(8);
-  dns.lookup(url, (err, address) => {
-    if (err || address == null) {
-      res.json({
-        error: "Invalid URL",
-      });
-    } else {
-      res.json({
-        original_url: `${req.body.url}`,
-        short_url: 1,
-      });
-    }
-  });
+const createShortUrl = (req, res) => {
+  let sliceUrl = `${req.body.url}`.slice(8);
+  //Verificación de url válida
+  if (validateUrl(sliceUrl) !== null) {
+    let urlId = Math.floor(Math.random() * (100 - 1) + 1);
+    let newUrl = {
+      original: req.body.url,
+      short: `${req.hostname}/api/shorturl/${urlId}`,
+      id: urlId,
+    };
+    shortUrlService.createShortUrl(newUrl, urlId);
+    res.send({
+      original_url: req.body.url,
+      short_url: urlId,
+    });
+  } else {
+    res.send({
+      error: "Invalid Url",
+    });
+  }
 };
+
 
 module.exports = {
-  getUrl, 
-  addUrl,
-  shortUrl,
+  getAllUrls,
+  getNewUrl,
+  createShortUrl,
 };

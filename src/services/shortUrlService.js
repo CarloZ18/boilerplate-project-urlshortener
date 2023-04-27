@@ -1,31 +1,44 @@
 const Url = require("../database/Urls");
 
-const getUrl = async () => {
+const findAllUrls = async () => {
   try {
-    const url = await Url.find({});
-    return console.log(url);
+    const allUrls = await Url.find();
+    return allUrls;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const findUrlbyId = async (shortUrlId) => {
+  try {
+    const IdUrl = await Url.findById(shortUrlId);
+    return IdUrl.original;
   } catch (err) {
     return console.log(err);
   }
 };
 
-const addUrl = async (req, res) => {
+const createShortUrl = async (newUrl, newId) => {
   try {
-    let url = await Url.create(req.query.url);
-    url.save((err, data) => {
-      err ? console.error(err) : console.log(`${data} saved to database`);
-      done(null, data);
-    });
+    const originalUrl = await Url.find({ original: newUrl.original });
+    if (originalUrl.length < 1) {
+      const url = Url.create(newUrl);
+      return url;
+    } else {
+      const updateUrl = Url.updateOne(
+        { original: newUrl.original },
+        { id: newId },
+        { new: true }
+      );
+      return updateUrl;
+    }
   } catch (err) {
     return console.log(err);
   }
-};
-const shortUrl = async () => {
-  return;
 };
 
 module.exports = {
-  getUrl,
-  addUrl,
-  shortUrl,
+  findAllUrls,
+  findUrlbyId,
+  createShortUrl,
 };

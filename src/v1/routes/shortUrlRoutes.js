@@ -2,10 +2,8 @@ const express = require("express");
 const router = express.Router();
 const shortUrlController = require("../../controllers/shortUrlController");
 
-router.get("/", shortUrlController.getUrl);
-
-router.get("/", shortUrlController.addUrl);
-
-router.post("/api/shorturl", shortUrlController.shortUrl);
+router.get("/", shortUrlController.getAllUrls);
+router.post("/api/shorturl", shortUrlController.createShortUrl);
+router.get("/api/shorturl/:id", shortUrlController.getNewUrl);
 
 module.exports = router;
