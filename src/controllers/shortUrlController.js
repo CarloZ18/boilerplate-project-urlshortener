@@ -23,13 +23,13 @@ const createShortUrl = async (req, res) => {
       id: urlId,
     };
     const dataShortUrl = await shortUrlService.createShortUrl(newUrl);
-    res.send({
+    res.json({
       original_url: req.body.url,
       short_url: dataShortUrl,
     });
   } else {
-    res.send({
-      error: "Invalid Url",
+    res.json({
+      error: "invalid url",
     });
   }
 };
