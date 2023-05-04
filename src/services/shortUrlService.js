@@ -11,26 +11,21 @@ const findAllUrls = async () => {
 
 const findUrlbyId = async (shortUrlId) => {
   try {
-    const IdUrl = await Url.findById(shortUrlId);
-    return IdUrl.original;
+    const IdUrl = await Url.find({ id: shortUrlId });
+    return IdUrl[0];
   } catch (err) {
     return console.log(err);
   }
 };
 
-const createShortUrl = async (newUrl, newId) => {
+const createShortUrl = async (newUrl) => {
   try {
     const originalUrl = await Url.find({ original: newUrl.original });
     if (originalUrl.length < 1) {
-      const url = Url.create(newUrl);
-      return url;
+      await Url.create(newUrl);
+      return newUrl;
     } else {
-      const updateUrl = Url.updateOne(
-        { original: newUrl.original },
-        { id: newId },
-        { new: true }
-      );
-      return updateUrl;
+      return originalUrl[0];
     }
   } catch (err) {
     return console.log(err);
