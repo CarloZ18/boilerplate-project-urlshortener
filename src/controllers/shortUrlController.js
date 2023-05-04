@@ -8,7 +8,7 @@ const getAllUrls = (req, res) => {
 
 const getNewUrl = async (req, res) => {
   const urlInBD = await shortUrlService.findUrlbyId(req.params.id);
-  res.redirect(urlInBD.original);
+  res.redirect(urlInBD);
 };
 
 const createShortUrl = async (req, res) => {
@@ -25,7 +25,7 @@ const createShortUrl = async (req, res) => {
     const dataShortUrl = await shortUrlService.createShortUrl(newUrl);
     res.send({
       original_url: req.body.url,
-      short_url: dataShortUrl.id,
+      short_url: dataShortUrl,
     });
   } else {
     res.send({

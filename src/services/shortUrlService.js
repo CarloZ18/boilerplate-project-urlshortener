@@ -12,7 +12,7 @@ const findAllUrls = async () => {
 const findUrlbyId = async (shortUrlId) => {
   try {
     const IdUrl = await Url.find({ id: shortUrlId });
-    return IdUrl[0];
+    return IdUrl[0].original;
   } catch (err) {
     return console.log(err);
   }
@@ -23,9 +23,9 @@ const createShortUrl = async (newUrl) => {
     const originalUrl = await Url.find({ original: newUrl.original });
     if (originalUrl.length < 1) {
       await Url.create(newUrl);
-      return newUrl;
+      return newUrl.id;
     } else {
-      return originalUrl[0];
+      return originalUrl[0].id;
     }
   } catch (err) {
     return console.log(err);
