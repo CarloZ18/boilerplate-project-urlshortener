@@ -12,7 +12,6 @@ const getNewUrl = async (req, res) => {
 };
 
 const createShortUrl = async (req, res) => {
-  //let sliceUrl = `${req.body.url}`.slice(8);
   const { url } = req.body;
   //Verificación de url válida
   if (validateUrl(url) === true) {
