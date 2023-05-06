@@ -12,11 +12,11 @@ const getNewUrl = async (req, res) => {
 };
 
 const createShortUrl = async (req, res) => {
-  let sliceUrl = `${req.body.url}`.slice(8);
+  //let sliceUrl = `${req.body.url}`.slice(8);
+  const { url } = req.body;
   //Verificación de url válida
-  if (await validateUrl(sliceUrl) !== null) {
-    console.log(await validateUrl(sliceUrl))
-    const { url } = req.body;
+  if (validateUrl(url) === true) {
+    console.log(validateUrl(url));
     let urlId = uuidv4().slice(0, 5);
     let newUrl = {
       original: url,
