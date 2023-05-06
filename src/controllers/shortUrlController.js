@@ -13,9 +13,10 @@ const getNewUrl = async (req, res) => {
 
 const createShortUrl = async (req, res) => {
   let sliceUrl = `${req.body.url}`.slice(8);
-  const { url } = req.body;
   //Verificación de url válida
-  if (validateUrl(sliceUrl) !== null) {
+  if (await validateUrl(sliceUrl) !== null) {
+    console.log(await validateUrl(sliceUrl))
+    const { url } = req.body;
     let urlId = uuidv4().slice(0, 5);
     let newUrl = {
       original: url,
@@ -23,12 +24,12 @@ const createShortUrl = async (req, res) => {
       id: urlId,
     };
     const dataShortUrl = await shortUrlService.createShortUrl(newUrl);
-    res.json({
-      original_url: req.body.url,
+    res.send({
+      original_url: url,
       short_url: dataShortUrl,
     });
   } else {
-    res.json({
+    res.send({
       error: "invalid url",
     });
   }
